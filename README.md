@@ -11,13 +11,13 @@ to Suricata datasets/datareps.
 - Lua Script that checks the whole URL and creates alerts to different log file
 
 Be aware that Mandiant Intelligence has IOCs like `https://www.youtube.com/c?sfksdflsdfjsldfj` and 
-you have to have unencrypted traffic in order to detect it. Hence you have to rely on TLS SNI.
+you have to have unencrypted traffic in order to detect it. Hence if you don't decrypt TLS traffic, you have to rely on TLS SNI.
 
-For that specific reason I don't load these IOCs as hostnames.  Whilelisting it is mandatory.
+In order to avoid false positives, I don't load these IOCs as hostnames.  Whilelisting it is mandatory for these IOCs (future work).
 
-There are some IOCs which begin with `smtp://` ,  `tcp://` ... For those I extract the hostname and put it in `fqdn.lst`
+There are also some IOCs which begin with `smtp://` ,  `tcp://` ... For those I extract the hostname and put it in `fqdn.lst`
 
-`smtp.helo` sticky buffer will be available on Suricata 8.0
+`smtp.helo` sticky buffer will be available on Suricata 8.0, so till then ...
 
 
 ## Known Issues
@@ -26,7 +26,7 @@ When I use datareps I cannot load more than 241000 records even if I
 change the `memcap` and `hashsize` values. By using datasets I am not
 facing this issue. Maybe I do something wrong ...
 
-Actually Suricata in `suricata.log` says that loaded all the records, but if the IOC is below line ~24100 it never triggers. Maybe a timeout take place.
+Actually Suricata in `suricata.log` says that all the records have been loaded, but if the IOC is below line ~241000 it never triggers. Maybe a timeout take place.
 
 ## Dependencies
 
